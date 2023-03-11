@@ -23,16 +23,12 @@ class Datum:
         self.column_names = None
         self.target_name = None
 
-        if target is not None:
-            self.data = data
-            self.target = target
-        else:
-            self.data = data
+        self.data = data
+        self.target = target
 
     @property
     def data(self):
-
-        return self.recast(self._data)
+        return self._recast(self._data)
 
     @data.setter
     def data(self, data):
@@ -45,14 +41,18 @@ class Datum:
     def target(self):
 
         if self._target is not None:
-            return self.recast(self._target).view(-1, 1)
+            return self._recast(self._target).view(-1, 1)
         else:
-            raise Exception('target not defined.')
+            return self._target
 
     @target.setter
     def target(self, target):
+        
+        if target is None:
+            self._target = target
+            self.target_name = None
 
-        if isinstance(target, str):
+        elif isinstance(target, str):
             self._target = self._data[target]
             self._data = self._data.drop([target], axis=1)
             self.target_name = target            
@@ -61,7 +61,7 @@ class Datum:
         elif isinstance(target, int):
             self.column_names = None
             self.target_name = None
-            self._data = self.recast(self._data)
+            self._data = self._recast(self._data)
             self._target = self._data[:, target]
             self._data = self._data[:, np.arange(self._data.shape[1]) != target]
         
@@ -72,7 +72,7 @@ class Datum:
             if isinstance(target, (pandas.core.frame.DataFrame, pandas.core.series.Series)):
                 self.target_name = target.name
 
-    def recast(self, datum):
+    def _recast(self, datum):
 
         if isinstance(datum, (pandas.core.frame.DataFrame, pandas.core.series.Series)):
             return torch.from_numpy(datum.values)
@@ -82,6 +82,12 @@ class Datum:
 
         if isinstance(datum, torch.Tensor):
             return datum
+    
+    def recast(self):
+
+        self._data = self._recast(self._data)
+        if self._target is not None:
+            self._target = self._recast(self._target).view(-1, 1)
     
     @property
     def X(self):

@@ -11,7 +11,7 @@ class Datum:
         self._column_names = None
         self._target_name = None
 
-        if target:
+        if target is not None:
             self.data = data
             self.target = target
         else:

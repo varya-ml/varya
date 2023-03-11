@@ -6,7 +6,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name = 'varya',
-    version = '0.0.0a1',
+    version = '0.0.2a1',
     author = 'Kritik Seth',
     author_email = 'sethkritik@gmail.com',
     description = 'Machine Learning Tools',

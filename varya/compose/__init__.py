@@ -1,3 +1,3 @@
-from .__compose import Datum
+from .core import Datum
 
 __all__ = ['Datum']

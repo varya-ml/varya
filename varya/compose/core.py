@@ -4,12 +4,24 @@ import torch
 
 class Datum:
 
-    def __init__(self, data, target=None):
+    """
+    Data formatter, converts heterogenous data types to homogenous torch tensors.
+
+    Parameters
+    ----------
+    data / X : pandas.core.frame.DataFrame / pandas.core.series.Series / numpy.ndarray / torch.tensor
+    target / y : str / int / pandas.core.frame.DataFrame / pandas.core.series.Series / numpy.ndarray / torch.tensor
+    column_names : list of strings
+    target_name : string
+
+    """
+
+    def __init__(self, data=None, target=None):
         
         self._data = None
         self._target = None
-        self._column_names = None
-        self._target_name = None
+        self.column_names = None
+        self.target_name = None
 
         if target is not None:
             self.data = data
@@ -27,7 +39,7 @@ class Datum:
 
         self._data = data
         if isinstance(data, (pandas.core.frame.DataFrame, pandas.core.series.Series)):
-            self._column_names = data.columns.tolist()
+            self.column_names = data.columns.tolist()
 
     @property
     def target(self):
@@ -43,12 +55,12 @@ class Datum:
         if isinstance(target, str):
             self._target = self._data[target]
             self._data = self._data.drop([target], axis=1)
-            self._target_name = target            
-            self._column_names = self._data.columns.tolist()
+            self.target_name = target            
+            self.column_names = self._data.columns.tolist()
 
         elif isinstance(target, int):
-            self._column_names = None
-            self._target_name = None
+            self.column_names = None
+            self.target_name = None
             self._data = self.recast(self._data)
             self._target = self._data[:, target]
             self._data = self._data[:, np.arange(self._data.shape[1]) != target]
@@ -58,7 +70,7 @@ class Datum:
                                  torch.Tensor)):
             self._target = target
             if isinstance(target, (pandas.core.frame.DataFrame, pandas.core.series.Series)):
-                self._target_name = target.name
+                self.target_name = target.name
 
     def recast(self, datum):
 
@@ -70,3 +82,19 @@ class Datum:
 
         if isinstance(datum, torch.Tensor):
             return datum
+    
+    @property
+    def X(self):
+        return self.data
+    
+    @X.setter
+    def X(self, X):
+        self.data = X
+    
+    @property
+    def y(self):
+        return self.target
+    
+    @y.setter
+    def y(self, y):
+        self.target = y

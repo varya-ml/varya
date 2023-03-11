@@ -1,19 +1,20 @@
 import os
 import setuptools
+import varya
 
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name = 'varya',
-    version = '0.0.2a1',
-    author = 'Kritik Seth',
+    version = varya.__version__,
+    author = varya.__author__,
     author_email = 'sethkritik@gmail.com',
     description = 'Machine Learning Tools',
     py_modules = [''],
     long_description = long_description,
     long_description_content_type = 'text/markdown',
-    url = 'https://github.com/varya-ml/varya',
+    url = varya.__url__,
     classifiers = [
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: BSD License',

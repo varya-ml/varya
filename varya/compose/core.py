@@ -71,6 +71,18 @@ class Datum:
             self._target = target
             if isinstance(target, (pandas.core.frame.DataFrame, pandas.core.series.Series)):
                 self.target_name = target.name
+    
+    @property
+    def rows(self):
+        return self.data.shape[0]
+    
+    @property
+    def columns(self):
+        return self.data.shape[1]
+    
+    @property
+    def shape(self):
+        return (self.rows(), self.columns())
 
     def _recast(self, datum):
 

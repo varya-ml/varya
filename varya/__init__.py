@@ -1,4 +1,4 @@
-__version__ = '0.0.6a1'
+__version__ = '0.0.10a1'
 __author__ = 'Kritik Seth'
 __maintainer__ = __author__
 __license__ = 'BSD 3-Clause License'

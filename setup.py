@@ -25,7 +25,8 @@ setuptools.setup(
     install_requires = [
     'pandas',
     'numpy',
-    'torch'
+    'torch',
+    'scikit-learn'
       ],
     python_requires='>=3.6'
 )

@@ -2,6 +2,10 @@ import pandas
 import numpy
 import torch
 
+from ..utils.validation import (
+    recast_to_tensor
+)
+
 class Datum:
 
     """
@@ -28,7 +32,7 @@ class Datum:
 
     @property
     def data(self):
-        return self._recast(self._data)
+        return recast_to_tensor(self._data)
 
     @data.setter
     def data(self, data):
@@ -41,7 +45,7 @@ class Datum:
     def target(self):
 
         if self._target is not None:
-            return self._recast(self._target).view(-1, 1)
+            return recast_to_tensor(self._target).view(-1, 1)
         else:
             return self._target
 
@@ -61,7 +65,7 @@ class Datum:
         elif isinstance(target, int):
             self.column_names = None
             self.target_name = None
-            self._data = self._recast(self._data)
+            self._data = recast_to_tensor(self._data)
             self._target = self._data[:, target]
             self._data = self._data[:, np.arange(self._data.shape[1]) != target]
         
@@ -82,24 +86,13 @@ class Datum:
     
     @property
     def shape(self):
-        return (self.rows(), self.columns())
-
-    def _recast(self, datum):
-
-        if isinstance(datum, (pandas.core.frame.DataFrame, pandas.core.series.Series)):
-            return torch.from_numpy(datum.values)
-        
-        if isinstance(datum, numpy.ndarray):
-            return torch.from_numpy(datum)
-
-        if isinstance(datum, torch.Tensor):
-            return datum
+        return (self.rows, self.columns)
     
     def recast(self):
 
-        self._data = self._recast(self._data)
+        self._data = recast_to_tensor(self._data)
         if self._target is not None:
-            self._target = self._recast(self._target).view(-1, 1)
+            self._target = recast_to_tensor(self._target).view(-1, 1)
     
     @property
     def X(self):

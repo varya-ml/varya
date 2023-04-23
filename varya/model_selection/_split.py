@@ -132,10 +132,10 @@ def train_test_split(X, y=None, test_size=None, train_size=None, random_state=No
     >>> data = Datum(df, 0)
     >>> data.X
     tensor([[0, 1],
-           [2, 3],
-           [4, 5],
-           [6, 7],
-           [8, 9]])
+            [2, 3],
+            [4, 5],
+            [6, 7],
+            [8, 9]])
     >>> list(data.y)
     [0, 1, 2, 3, 4]
     >>> train, test = train_test_split(

@@ -52,8 +52,7 @@ def verify_consistent_rows(*tensors):
         raise ValueError(f'Found input variables with inconsistent numbers of rows: {[int(l) for l in num_rows]}')
 
 def probe_regression_targets(y_true, y_pred):
-
-    verify_consistent_rows()
+    
     y_true = probe_tensor(y_true)
     y_pred = probe_tensor(y_pred)
 

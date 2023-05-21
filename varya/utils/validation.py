@@ -67,7 +67,7 @@ def probe_regression_targets(y_true, y_pred):
             f'y_true and y_pred have different number of rows ({fetch_num_rows(y_true)}!={fetch_num_rows(y_pred)})'
             )
     
-    return  y_true, y_pred
+    return y_true, y_pred
 
 def recast_to_tensor(data, dtype=torch.float64):
     
